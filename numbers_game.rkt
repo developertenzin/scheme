@@ -110,7 +110,67 @@
 
 (pick '3 '(rafeh qazi matt tenzin bob))
 
-76
 
+(define rempick
+  (lambda (n lat)
+    (cond
+      ((zero? (sub1 n)) (cdr lat))
+      (else (cons (car lat) (rempick (sub1 n) (cdr lat))))))) 
   
+(rempick '2 '(tenzin qazi matt francis))
+
+(define no-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) '())
+      ((number? (car lat)) (no-nums (cdr lat)))
+      (else (cons (car lat) (no-nums (cdr lat)))))))
+
+(no-nums '(9 tenzin 8 qazi 7 francis 6 matthew))
+
+(define all-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) '())
+      ((number? (car lat)) (cons (car lat) (all-nums (cdr lat))))
+      (else (all-nums (cdr lat))))))
+
+(all-nums '(1 charlie 2 tango bravo 3 69))
+
+(define eqan?
+  (lambda (x y)
+    (cond
+      ((and (number? x) (number? y))
+       (= x y))
+      ((or (number? x) (number? y))
+       false)
+      (else (eq? x y )))))
+
+(eqan? 'hello 'hello)
+
+(define occur
+  (lambda (a lat)
+    (cond
+      ((null? lat) 0)
+      ((eq? (car lat) a) (add1 (occur a (cdr lat))))
+      (else (occur a (cdr lat))))))
+
+(occur 'hey '(hey bye lol hey hey bro hey))
+
+(define one?
+  (lambda (n)
+      (= n 1)))
+
+(one? '2)
+
+(define rempicker
+  (lambda (a lat)
+    (cond
+      ((null? lat) '())
+      ((one? a) (cdr lat))
+      (else (cons (car lat) (rempicker (sub1 a) (cdr lat)))))))
+
+(rempicker '3 '(charlie tango bravo qazi tenzin))
+
+
 
