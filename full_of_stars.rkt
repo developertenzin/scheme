@@ -13,7 +13,7 @@
       ((eq? (car l) a) (rember* a (cdr l)))
       (else (cons (car l) (rember* a (cdr l)))))))
 
-(rember* 'cat '('(dog cat) '(sheep '(whale '(more cat and more cat) tiger) lion cat) '(crazy '(cat and '(and more cat) more cat) cat))) 
+(rember* 'cat '((dog cat) (sheep (whale (more cat and more cat) tiger) lion cat) (crazy (cat and (and more cat) more cat) cat))) 
 
 (display "(insertR* new old l) inserts 'new' to the right of every occurence of 'old' in the nested (or not nested) list.\n")
 
@@ -45,7 +45,7 @@
        (cons (insertR* new old (car l)) (insertR* new old (cdr l)))
       ))))
    
-(insertR* 'qazi 'rafeh '(rafeh is pretty '(cool (but rafeh is a little ****) and rafeh is a *****)))
+(insertR* 'qazi 'rafeh '(rafeh is pretty (cool (but rafeh is a little ****) and rafeh is a *****)))
 
 (display "(define (occur* a l)) checks how many times 'a' occurs in l\n")
 (define occur*
@@ -78,12 +78,40 @@
       (else
        (cons (subst* new old (car l)) (subst* new old (cdr l)))))))
 
-(subst* 'god 'blank '(qazi is a blank '(he was born '(a blank) he is a blank among men)))
+(subst* 'god 'blank '(qazi is a blank (he was born (a blank) he is a blank among men)))
        
 
-          
+
+(display "(define (insertL* new old l)) inserts 'new in front of every occurence of 'old in the nested(or not nested) list.\n")
+(define insertL*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+       (cond
+         ((eq? (car l) old)
+          (cons new (cons old (insertL* new old (cdr l)))))
+         (else
+          (cons (car l) (insertL* new old (cdr l))))))
+       (else
+        (cons (insertL* new old (car l)) (insertL* new old (cdr l)))))))
+
+(insertL* 'tenzin 'phuljung '(phuljung was born (in 1993 (and phuljung was born a god as well (phuljung was meant to be a god)))))
               
 
-              
+(display "(member* a l) returns true if 'a exists in the nested (or not nested) list l and false otherwise.\n")
+(define member*
+  (lambda (a l)
+    (cond
+      ((null? l) false)
+      ((atom? (car l))
+       (cond
+         ((eq? (car l) a) true)
+         (else (member* a (cdr l)))))
+      (else
+       (or (member* a (car l)) (member* a (cdr l)))))))
+
+(member* 'tenzin '(tenzin old (gold henry tenzin (more tenzin) (and more (tenzin))) and more tenzin))
+          
             
 
