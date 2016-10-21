@@ -113,5 +113,17 @@
 
 (member* 'tenzin '(tenzin old (gold henry tenzin (more tenzin) (and more (tenzin))) and more tenzin))
           
-            
+
+(display "(leftmost l) returns the left most atom of an not empty list that does not contain any empty list.\n")
+(define leftmost
+  (lambda (l)
+    (cond
+      ((atom? (car l))
+       (car l))
+      (else
+       (leftmost (car l))))))
+
+(leftmost '((((tango) tenzin phuljung) rafeh) qazi))
+
+
 
