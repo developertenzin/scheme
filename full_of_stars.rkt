@@ -1,1 +1,72 @@
 #lang racket
+(define atom?
+  (lambda (x)
+    (and (not (pair? x)) (not (null? x)))))
+
+(display "(rember* a l) removes all 'a'(s) from a nested list\n")
+
+(define rember*
+  (lambda (a l)
+    (cond
+      ((null? l) '())
+      ((list? (car l)) (cons (rember* a (car l)) (rember* a (cdr l))))
+      ((eq? (car l) a) (rember* a (cdr l)))
+      (else (cons (car l) (rember* a (cdr l)))))))
+
+(rember* 'cat '('(dog cat) '(sheep '(whale '(more cat and more cat) tiger) lion cat) '(crazy '(cat and '(and more cat) more cat) cat))) 
+
+(display "(insertR* new old l) inserts 'new' to the right of every occurence of 'old' in the nested (or not nested) list.\n")
+
+
+
+#| my version using "list?"
+(define insertR*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((list? (car l)) (cons (insertR* new old (car l)) (insertR* new old (cdr l))))
+      ((eq? (car l) old) (cons old (cons new (insertR* new old (cdr l)))))
+      (else (cons (car l) (insertR* new old (cdr l)))))))
+|#
+
+(define insertR*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+       (cond
+        ((eq? (car l) old)
+         (cons old (cons new (insertR* new old (cdr l)))))
+        (else
+         (cons (car l) (insertR* new old (cdr l))))
+       )
+      )
+      (else
+       (cons (insertR* new old (car l)) (insertR* new old (cdr l)))
+      ))))
+   
+(insertR* 'qazi 'rafeh '(rafeh is pretty '(cool (but rafeh is a little ****) and rafeh is a *****)))
+
+(display "(define (occur* a l)) checks how many times 'a' occurs in l\n")
+(define occur*
+  (lambda (a l)
+    (cond
+      ((null? l) 0)
+      ((atom? (car l))
+       (cond
+         ((eq? (car l) a)
+          (+ 1 (occur* a (cdr l))))
+         (else
+          (occur* a (cdr l)))))
+      (else
+       (+ (occur* a (car l)) (occur* a (cdr l)))))))
+
+(occur* 'apple '(apple ball cat apple apple more apple tenzin apple))
+       
+      
+       
+              
+
+              
+            
+
