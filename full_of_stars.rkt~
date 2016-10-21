@@ -81,6 +81,14 @@
 (subst* 'god 'blank '(qazi is a blank '(he was born '(a blank) he is a blank among men)))
        
 
+(display "(define (insertL* new old l)) inserts 'new in front of every occurence of 'old in the nested(or not nested) list.")
+(define insertL*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+       (cond
+         ((eq? (car l) old)
           
               
 
