@@ -125,23 +125,38 @@
 
 (leftmost '((((tango) tenzin phuljung) rafeh) qazi))
 
-
+#|
 (display "(eqlist? l1 l2) will return true if both lists are equal and false otherwise.\n")
 (define eqlist?
   (lambda (l1 l2)
     (cond
       ((and (null? l1) (null? l2)) true)
-      ((and (null? l1) (atom? (car l2))) false)
-      ((and (null? l2) (atom? (car l1))) false)
-      ((and (atom? (car l1)) (list? (car l2))) false)
-      ((and (atom? (car l2)) (list? (car l1))) false)
+      ((or (null? l1) (null? l2)) false)
       ((and (atom? (car l1)) (atom? (car l2)))
        (and (eq? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2))))
+       (else (and (eqlist? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2)))))))
+
+(eqlist? '(hello (1 2 3) 2 apple) '(hello (1 (extra hey) 2 3) 2 apple))
+|#
+
+
+(define equal?
+  (lambda (s1 s2)
+    (cond
+      ((and (atom? s1) (atom? s2))
+       (eq? s1 s2))
+      ((or (atom? s1) (atom? s2)) false)
+      (else (eqlist? s1 s2)))))
+(display "(eqlist? s1 s2) checks if two lists are equal to each other.\n")
+(define eqlist?
+  (lambda (l1 l2)
+    (cond
+      ((and (null? l1) (null? l2)) true)
+      ((or (null? l1) (null? l2)) false)
       (else
-       (and (eqlist? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2)))))))
+       (and (equal? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2)))))))     
+(eqlist? '(apple (ball cat) dog) '(apple (ball cat) dog))
 
-(eqlist? '(tenzin (hey hey)qazi matt) '(tenzin (hey hey) qazi matt))
 
-      
 
 
